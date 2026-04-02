@@ -1,0 +1,16 @@
+# Switch to Opus (most capable, higher cost)
+openclaw config set agents.defaults.model.primary "anthropic/claude-opus-4-6"
+
+# Switch back to Sonnet (fast + capable, recommended)
+openclaw config set agents.defaults.model.primary "anthropic/claude-sonnet-4-6"
+
+# Switch back to Gemini
+openclaw config set agents.defaults.model.primary "google/gemini-2.0-flash"
+
+
+You say	What happens
+parse my resume	Reads your PDFs, analyzes your background, tells you target roles + skills
+search for jobs	Full 5-step workflow — scrapes all boards, scores, writes to Excel
+show top jobs	Lists the best matches from your Excel tracker
+how many jobs do I have?	Shows stats from jobs.xlsx
+set minimum score to 75	Raises the bar — only 75+ matches get saved

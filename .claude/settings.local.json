@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:openclaw.ai)",
+      "WebFetch(domain:github.com)",
+      "Bash(git -C /tmp/openclaw log:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(venv/Scripts/python:*)",
+      "Bash(openclaw gateway install:*)",
+      "Bash(openclaw channel list:*)",
+      "Bash(openclaw status:*)",
+      "Bash(openclaw config get:*)",
+      "Bash(cmd //c:*)",
+      "Bash(openclaw logs:*)",
+      "Bash(openclaw channels configure:*)",
+      "Bash(openclaw channels:*)",
+      "Bash(openclaw gateway status:*)",
+      "Bash(openclaw plugins:*)",
+      "Bash(openclaw gateway stop:*)",
+      "Bash(netstat:*)",
+      "Bash(ss:*)",
+      "Bash(openclaw gateway:*)",
+      "Bash(openclaw config schema:*)",
+      "Bash(\"/c/Users/manis/.openclaw/run-gateway.bat\":*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(openclaw cron:*)",
+      "Bash(openclaw dm list:*)",
+      "Bash(openclaw pairing:*)",
+      "Bash(openclaw config set:*)",
+      "Bash(openclaw models scan:*)",
+      "Bash(openclaw models list:*)",
+      "Bash(openclaw skills:*)"
+    ]
+  }
+}
