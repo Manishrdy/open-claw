@@ -29,6 +29,7 @@ from apscheduler.triggers.cron import CronTrigger
 from src.config import SCHEDULE_HOUR, SCHEDULE_MINUTE
 from src.excel_manager import append_jobs, get_stats
 from src.job_matcher import match_jobs
+from src.langchain_scorer import match_jobs_langchain
 from src.resume_parser import load_candidate_profile
 from src.searchers.ashby import AshbySearcher
 from src.searchers.funded_startups import FundedStartupsSearcher
@@ -72,7 +73,7 @@ def get_profile():
     return _profile_cache
 
 
-def run_pipeline(dry_run: bool = False) -> dict:
+def run_pipeline(dry_run: bool = False, use_langchain: bool = False) -> dict:
     """
     Execute the full job search pipeline synchronously.
     Returns a summary dict: {added, total_found, high_matches, duration_seconds, timestamp}
@@ -122,8 +123,12 @@ def run_pipeline(dry_run: bool = False) -> dict:
         return {"added": 0, "total_found": total_found, "high_matches": 0, "duration_seconds": time.time() - start}
 
     # Score with Gemini
-    print("\n[pipeline] Scoring listings with Gemini...")
-    matches = match_jobs(all_listings, profile)
+    if use_langchain:
+        print("\n[pipeline] Scoring listings with LangChain + Gemini...")
+        matches = match_jobs_langchain(all_listings, profile)
+    else:
+        print("\n[pipeline] Scoring listings with Gemini...")
+        matches = match_jobs(all_listings, profile)
 
     high_matches = sum(1 for m in matches if m.score >= 80)
     print(f"[pipeline] Matches after scoring: {len(matches)} ({high_matches} high ≥80%)")
@@ -153,6 +158,7 @@ def main():
     parser.add_argument("--parse-only", action="store_true", help="Parse resume and print profile, then exit")
     parser.add_argument("--search-only", action="store_true", help="Run pipeline once then exit (no bot)")
     parser.add_argument("--dry-run", action="store_true", help="Search without scoring/writing, then exit")
+    parser.add_argument("--langchain", action="store_true", help="Use LangChain scoring chain instead of raw Gemini")
     args = parser.parse_args()
 
     if args.parse_only:
@@ -166,7 +172,7 @@ def main():
         return
 
     if args.search_only or args.dry_run:
-        run_pipeline(dry_run=args.dry_run)
+        run_pipeline(dry_run=args.dry_run, use_langchain=args.langchain)
         stats = get_stats()
         print(f"\nExcel stats: {stats}")
         return
